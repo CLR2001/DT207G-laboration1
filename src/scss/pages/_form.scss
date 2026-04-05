@@ -1,0 +1,55 @@
+@use '../core/' as *;
+
+.main-form {
+  display: grid;
+  place-items: center;
+}
+
+.main-content-form {
+  width: min(90%, 700px);
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+  input {
+    width: 100%;
+    padding:  0 5px;
+    border-radius: 4px;
+    background-color: rgb(240, 240, 240);
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.form-buttons {
+  flex-direction: row;
+  gap: 1rem;
+  input, .reset-button {
+    width: max-content;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: $text-primary-inverse;
+    background-color: rgb(240, 240, 240);
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.03);
+    }
+    &:active {
+      transform: scale(1);
+    }
+  }
+}
+
+.warning-list {
+  list-style-type: disc;
+  color: red;
+}
+
+.saved-alert {
+  list-style-type: disc;
+  color: rgb(63, 233, 63);
+}

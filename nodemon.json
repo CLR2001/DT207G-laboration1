@@ -1,0 +1,5 @@
+{
+  "watch": ["app.ts", "views"],
+  "ext": "ts,ejs,json",
+  "exec": "npx tsx app.ts"
+}

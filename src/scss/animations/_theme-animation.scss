@@ -1,0 +1,16 @@
+$theme-duration: 200ms;
+$theme-curve: cubic-bezier(0.4, 0, 0.2, 1);
+
+body, header, .active-page::after, .main-content-not-found a, footer {
+  transition: background-color $theme-duration $theme-curve,
+}
+
+$theme-background-transition: background-color $theme-duration $theme-curve;
+
+h1, h2, h3, h4, h5, h6, p, a, footer li {
+  transition: color $theme-duration $theme-curve;
+}
+
+svg {
+  transition: stroke $theme-duration $theme-curve;
+}

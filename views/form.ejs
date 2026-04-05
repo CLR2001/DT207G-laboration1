@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboration 1</title>
+  <link rel="stylesheet" href="/dist/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <nav>
+        <ul class="nav-list">
+          <li><a href="/" data-page="index">Startsida/Dina kurser</a></li>
+          <li><a href="/form" data-page="form" class="active-page">Lägg till kurs</a></li>
+          <li><a href="/about" data-page="about">Om webbplatsen</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-form">
+    <div class="main-content main-content-form">
+      <h1>Lägg till kurs</h1>
+      <form action="/form" method="post">
+        <div>
+          <label for="coursecode">Kurskod:</label>
+          <input type="text" name="coursecode" placeholder="DT084G" value="<%= locals.courseData?.courseCode || "" %>">
+        </div>
+        <div>
+          <label for="coursename">Kursnamn:</label>
+          <input type="text" name="coursename" placeholder="Íntroduktion till programmering i JavaScript" value="<%= locals.courseData?.courseName || "" %>">
+        </div>
+        <div>
+          <label for="syllabus">Kursplan:</label>
+          <input type="text" name="syllabus" placeholder="https://www.miun.se/utbildning/..." value="<%= locals.courseData?.syllabus || "" %>">
+        </div>
+        <div>
+          <label for="progression">Kursprogression:</label>
+          <input type="text" name="progression" placeholder="A" value="<%= locals.courseData?.progression || "" %>">
+        </div>
+        <div class="form-buttons">
+          <input type="submit" value="Skicka"></input>
+          <a href="/form" class="reset-button">Rensa</a>
+        </div>
+      </form>
+
+      <% if (locals.warningArray && warningArray.length > 0) { -%>
+          <ul class="warning-list">
+            <% warningArray.forEach(message => { -%>
+                <li><%- message %></li>
+            <% }); -%>
+          </ul>
+      <% } -%>
+
+      <% if (locals.showSaved) { -%>
+          <ul class="saved-alert">
+              <li>Kursen har sparats!</li>
+          </ul>
+      <% } -%>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <ul>
+        <li>Ludvig Rosenqvist</li>
+        <li>2026</li>
+        <li>Laboration 1</li>
+      </ul>
+    </div>
+  </footer>
+  <script src="/dist/main.js"></script>
+</body>
+</html>

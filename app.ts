@@ -1,0 +1,148 @@
+/* --------------------------------- Imports -------------------------------- */
+import express, { application } from 'express';
+import { Request, Response } from 'express';
+import pgImport, { Connection } from 'pg';
+const { Client } = pgImport;
+import 'dotenv/config';
+import path from 'path';
+import pc from "picocolors";
+import livereload from "livereload";
+import connectLiveReload from "connect-livereload";
+import { start } from 'repl';
+
+/* --------------------------- App Initialization --------------------------- */
+const app = express();
+
+/* --------------------------- Live Reload Server --------------------------- */
+const liveReloadServer = livereload.createServer();
+
+liveReloadServer.watch(path.resolve('views'));
+liveReloadServer.watch(path.resolve('public'));
+
+liveReloadServer.server.once("connection", () => {
+  setTimeout(() => {
+    liveReloadServer.refresh("/");
+  }, 100);
+});
+app.use(connectLiveReload());
+
+/* ------------------- View Engine and Database Connection ------------------ */
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+
+const client = new Client({
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+connectToDatabase();
+
+/* --------------------------------- Routing -------------------------------- */
+app.get("/", async (req, res) => {
+  res.render('index');
+});
+
+app.get("/form", async (req, res) => {
+  const isSaved = req.query.saved === 'true';
+  res.render('form', { 
+    warningArray: [],
+    courseData: {},
+    showSaved: isSaved 
+  });
+});
+
+app.get("/about", async (req, res) => {
+  res.render('about');
+});
+
+/* ---------------------------------- Posts --------------------------------- */
+app.post('/form', async (req, res) => {
+  formSubmit(req, res);
+});
+
+/* ----------------------- Application Start Sequence ----------------------- */
+const PORT = Number(process.env.PORT) || 3000;
+
+app.listen(PORT, () => {
+  setTimeout(() => {
+    console.log("\n-------------------------------------------");
+    console.log(`  ● Server is running!`);
+    console.log(`  › ${pc.blue(pc.underline(`http://localhost:${PORT}`))}`);
+    console.log("-------------------------------------------");
+  }, 500);
+});
+
+/* ------------------------------- Interfaces ------------------------------- */
+interface Course {
+  courseCode: string;
+  courseName: string;
+  syllabus: string;
+  progression: string;
+}
+
+/* -------------------------------- Functions ------------------------------- */
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log('  ✔ Connected to database!');
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Connection error: ' + error.message);
+    }
+  }
+}
+
+function validateInput(input: string, message: string, array: Array<string>) {
+  if(input === "") {
+    array.push(message);    
+  }
+}
+
+function formSubmit(req: Request, res: Response) {
+  let warningArray: Array<string> = [];
+
+  const courseData: Course = {
+    courseCode: req.body.coursecode || "",
+    courseName: req.body.coursename || "",
+    syllabus: req.body.syllabus || "",
+    progression: req.body.progression || ""
+  }
+
+  validateInput(courseData.courseCode, 'Kurskod kan inte vara tomt.', warningArray);
+  validateInput(courseData.courseName, 'Kursnamn kan inte vara tomt.', warningArray);
+  validateInput(courseData.syllabus, 'Kursplan kan inte vara tomt.', warningArray);
+  validateInput(courseData.progression, 'Kursprogression kan inte vara tomt.', warningArray);
+  console.log(warningArray);
+  
+  if (warningArray.length > 0) {
+    res.render('form', { 
+      warningArray,
+      courseData
+    });
+  } 
+  else {
+    try {
+
+
+
+
+
+
+
+
+
+
+      
+      res.redirect('/form?saved=true');
+    } catch(error) {
+      console.log(error);
+    }
+  }
+}

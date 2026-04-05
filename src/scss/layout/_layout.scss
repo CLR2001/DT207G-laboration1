@@ -1,0 +1,13 @@
+@use '../core/' as *;
+
+body {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.header-content, .main-content, .footer-content {
+  display: grid;
+  max-width: 1400px;
+  margin: 0 auto;
+}

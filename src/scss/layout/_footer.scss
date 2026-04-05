@@ -1,0 +1,32 @@
+@use '../core/' as *;
+
+footer {
+  padding: 1rem $standard-padding;
+  background-color: $color-secondary;
+  a {
+    text-decoration: underline;
+  }
+}
+
+.footer-content {
+  ul {
+    display: grid;
+    place-items: center;
+    gap: 2rem;
+  }
+}
+
+:root[data-theme="light"] {
+  footer {
+    color: $text-primary-inverse;
+    background-color: $color-primary;
+  }
+}
+
+@media (min-width: 800px) {
+  .footer-content {
+    ul {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }  
+}

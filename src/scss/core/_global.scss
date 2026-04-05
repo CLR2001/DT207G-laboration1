@@ -1,0 +1,41 @@
+@use 'variables' as *;
+
+:root {
+  font-size: $global-font-clamp;
+}
+
+body {
+  overflow-x: clip;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: $text-muted;
+  background-color: $color-background;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $text-primary;
+}
+
+a {
+  color: inherit;
+}
+
+*:focus-visible {
+  outline: solid 2px $color-accent;
+}
+
+.icon {
+  width: 1em;
+  aspect-ratio: 1 / 1;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}

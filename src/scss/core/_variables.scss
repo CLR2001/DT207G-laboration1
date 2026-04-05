@@ -1,0 +1,56 @@
+$standard-padding: clamp(1.5rem, 5vw, 3rem);
+$global-font-clamp: clamp(1rem, 0.1vw + 1rem, 1.125rem);
+$scrollbar-width: var(--scrollbar-width);
+$header-height: var(--header-height);
+$color-primary: var(--color-primary);
+$color-secondary: var(--color-secondary);
+$color-accent: var(--color-accent);
+$color-background: var(--color-background);
+$color-background-inverse: var(--color-background-inverse);
+$text-primary: var(--text-primary);
+$text-muted: var(--text-muted);
+$text-primary-inverse: var(--text-primary-inverse);
+$text-muted-inverse: var(--text-muted-inverse);
+  
+
+@mixin light-theme() {
+  --color-primary: rgb(228, 228, 228);
+  --color-secondary: beige;
+  --color-accent: blue;
+  --color-background: #F8FAFC;
+  --color-background-inverse: #121212;
+  --text-primary: #212529;
+  --text-muted: #333333;
+  --text-primary-inverse: #F8F9FA;
+  --text-muted-inverse: #E9ECEF;
+}
+
+@mixin dark-theme() {
+  --color-primary: rgb(22, 22, 26);
+  --color-secondary: black;
+  --color-accent: purple;
+  --color-background: #121212;
+  --color-background-inverse: #F8FAFC;
+  --text-primary: #F8F9FA;
+  --text-muted: #E9ECEF;
+  --text-primary-inverse: #212529;
+  --text-muted-inverse: #333333;
+}
+
+:root {
+  @include light-theme();
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark-theme();
+  }
+}
+
+:root[data-theme="light"] {
+  @include light-theme();
+}
+
+:root[data-theme="dark"] {
+  @include dark-theme();
+}
