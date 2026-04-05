@@ -6,6 +6,10 @@ footer {
   a {
     text-decoration: underline;
   }
+  .icon {
+    width: 1.5em;
+    stroke: $text-muted;
+  }
 }
 
 .footer-content {
@@ -16,17 +20,10 @@ footer {
   }
 }
 
-:root[data-theme="light"] {
-  footer {
-    color: $text-primary-inverse;
-    background-color: $color-primary;
-  }
-}
-
 @media (min-width: 800px) {
   .footer-content {
     ul {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
   }  
 }

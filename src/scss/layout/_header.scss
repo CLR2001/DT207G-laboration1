@@ -16,7 +16,7 @@ header {
       font-size: 1.1em;
       transition: color 100ms;
       &:hover {
-        color: rgb(201, 201, 201);
+        transform: scale(1.03);
       }
     }
   }

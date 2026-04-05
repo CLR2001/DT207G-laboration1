@@ -16,6 +16,7 @@
   input {
     width: 100%;
     padding:  0 5px;
+    border: 1px solid rgb(240, 240, 240);
     border-radius: 4px;
     background-color: rgb(240, 240, 240);
   }
@@ -31,6 +32,8 @@
   .submit-button, .reset-button {
     width: max-content;
     padding: 0.5rem 1rem;
+    border: none;
+    border: 1px solid rgb(240, 240, 240);
     border-radius: 4px;
     color: $text-primary-inverse;
     background-color: rgb(240, 240, 240);
@@ -52,4 +55,16 @@
 .saved-alert {
   list-style-type: disc;
   color: rgb(63, 233, 63);
+}
+
+:root[data-theme="light"] {
+  .main-content-form form {
+    input {
+      border-color: $text-primary;
+    }
+  }
+  .submit-button, .reset-button {
+    color: $text-primary;
+    border-color: $text-primary;
+  }
 }

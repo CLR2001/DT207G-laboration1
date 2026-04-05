@@ -45,13 +45,10 @@ connectToDatabase();
 
 /* --------------------------------- Routing -------------------------------- */
 app.get("/", async (req, res) => {
-
   try {
     const result = await client.query(
       'SELECT * FROM courses'
     );
-    console.log(result.rows);
-    
     res.render('index', { courses: result.rows });
   } catch (error) {
     console.log(error);

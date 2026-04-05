@@ -44,7 +44,4 @@ async function createTables() {
   catch (error) {
     console.error(error);
   }
-  finally {
-    
-  }
 }

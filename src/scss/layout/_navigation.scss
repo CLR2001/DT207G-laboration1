@@ -1,3 +1,8 @@
 @use '../core/' as *;
 @use '../animations/' as *;
 
+.nav-list {
+  li {
+    position: relative;
+  }
+}
