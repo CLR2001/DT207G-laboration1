@@ -3,3 +3,36 @@
 .main-content {
   margin: 3rem auto;
 }
+
+.courses-section {
+  display: grid;
+  margin: 2rem 0;
+}
+
+.course-card {
+  position: relative;
+  justify-self: center;
+  padding: 2rem;
+  background-color: $color-primary;
+  border-radius: 1rem;
+  width: min(90%, 600px);
+  .course-indicator {
+    position: absolute;
+    top: 1ch;
+    right: 2ch;
+    filter: brightness(0.5);
+  }
+}
+
+.delete-button {
+  position: absolute;
+  right: 2ch;
+  bottom: 2ch;
+  color: $text-primary;
+  text-decoration: underline;
+  filter: brightness(0.5);
+  transition: filter 100ms ease-in-out;
+  &:hover {
+    filter: brightness(0.8);
+  }
+}

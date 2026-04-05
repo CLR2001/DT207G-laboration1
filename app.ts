@@ -1,14 +1,13 @@
 /* --------------------------------- Imports -------------------------------- */
-import express, { application } from 'express';
+import express from 'express';
 import { Request, Response } from 'express';
-import pgImport, { Connection } from 'pg';
+import pgImport from 'pg';
 const { Client } = pgImport;
 import 'dotenv/config';
 import path from 'path';
 import pc from "picocolors";
 import livereload from "livereload";
 import connectLiveReload from "connect-livereload";
-import { start } from 'repl';
 
 /* --------------------------- App Initialization --------------------------- */
 const app = express();
@@ -46,7 +45,17 @@ connectToDatabase();
 
 /* --------------------------------- Routing -------------------------------- */
 app.get("/", async (req, res) => {
-  res.render('index');
+
+  try {
+    const result = await client.query(
+      'SELECT * FROM courses'
+    );
+    console.log(result.rows);
+    
+    res.render('index', { courses: result.rows });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.get("/form", async (req, res) => {
@@ -65,6 +74,24 @@ app.get("/about", async (req, res) => {
 /* ---------------------------------- Posts --------------------------------- */
 app.post('/form', async (req, res) => {
   formSubmit(req, res);
+});
+
+app.post('/delete', async (req, res) => {
+  const courseToDelete = req.body.coursecode;
+
+  if (!courseToDelete) {
+    return res.redirect("/");
+  }
+
+  try {
+    const query = 'DELETE FROM courses WHERE coursecode = $1';
+    await client.query(query, [courseToDelete]);
+
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    res.redirect("/?error=true");
+  }
 });
 
 /* ----------------------- Application Start Sequence ----------------------- */
@@ -105,7 +132,7 @@ function validateInput(input: string, message: string, array: Array<string>) {
   }
 }
 
-function formSubmit(req: Request, res: Response) {
+async function formSubmit(req: Request, res: Response) {
   let warningArray: Array<string> = [];
 
   const courseData: Course = {
@@ -129,20 +156,23 @@ function formSubmit(req: Request, res: Response) {
   } 
   else {
     try {
+      const query = 'INSERT INTO courses(coursecode, coursename, syllabus, progression) VALUES($1, $2 ,$3, $4)'
+      const values = [
+        courseData.courseCode,
+        courseData.courseName,
+        courseData.syllabus,
+        courseData.progression
+      ];
 
+      await client.query(query, values);
 
-
-
-
-
-
-
-
-
-      
       res.redirect('/form?saved=true');
     } catch(error) {
       console.log(error);
+      res.render('form', { 
+        warningArray: ['Ett tekniskt fel uppstod när kursen skulle sparas.'], 
+        courseData 
+      });
     }
   }
 }

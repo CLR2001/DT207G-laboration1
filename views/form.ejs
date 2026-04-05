@@ -29,7 +29,7 @@
         </div>
         <div>
           <label for="coursename">Kursnamn:</label>
-          <input type="text" name="coursename" placeholder="Íntroduktion till programmering i JavaScript" value="<%= locals.courseData?.courseName || "" %>">
+          <input type="text" name="coursename" placeholder="Introduktion till programmering i JavaScript" value="<%= locals.courseData?.courseName || "" %>">
         </div>
         <div>
           <label for="syllabus">Kursplan:</label>
@@ -40,7 +40,7 @@
           <input type="text" name="progression" placeholder="A" value="<%= locals.courseData?.progression || "" %>">
         </div>
         <div class="form-buttons">
-          <input type="submit" value="Skicka"></input>
+          <input type="submit" value="Skicka" class="submit-button"></input>
           <a href="/form" class="reset-button">Rensa</a>
         </div>
       </form>
