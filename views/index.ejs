@@ -31,7 +31,7 @@
           <section class="course-card">
             <p><b><%- course.coursecode %></b></p>
             <p>Namn: <%- course.coursename %></p>
-            <p>Kursplan: <a href="<%- course.syllabus %>">Klicka här</a></p>
+            <div><p>Kursplan: </p><a href="<%- course.syllabus %>">Klicka här</a></div>
             <p>Progression: <b><%- course.progression.toUpperCase() %></b></p>
             <p class="course-indicator">#<%= index + 1 %></p>
             <form action="/delete" method="POST" onsubmit="return confirm('Vill du verkligen radera <%= course.coursecode %>?')">

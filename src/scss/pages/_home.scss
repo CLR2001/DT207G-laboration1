@@ -17,6 +17,13 @@
   background-color: $color-primary;
   border-radius: 1rem;
   width: min(90%, 600px);
+  div {
+    display: flex;
+    gap: 0.5ch;
+  }
+  a {
+    text-decoration: underline;
+  }
   .course-indicator {
     position: absolute;
     top: 1ch;
