@@ -32,7 +32,7 @@
             <p><b><%- course.coursecode %></b></p>
             <p>Namn: <%- course.coursename %></p>
             <p>Kursplan: <a href="<%- course.syllabus %>">Klicka här</a></p>
-            <p>Progression: <b><%- course.progression %></b></p>
+            <p>Progression: <b><%- course.progression.toUpperCase() %></b></p>
             <p class="course-indicator">#<%= index + 1 %></p>
             <form action="/delete" method="POST" onsubmit="return confirm('Vill du verkligen radera <%= course.coursecode %>?')">
               <input type="hidden" name="coursecode" value="<%= course.coursecode  %>">

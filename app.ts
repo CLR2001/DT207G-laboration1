@@ -145,8 +145,17 @@ async function formSubmit(req: Request, res: Response) {
   validateInput(courseData.courseCode, 'Kurskod kan inte vara tomt.', warningArray);
   validateInput(courseData.courseName, 'Kursnamn kan inte vara tomt.', warningArray);
   validateInput(courseData.syllabus, 'Kursplan kan inte vara tomt.', warningArray);
+
+  const isLink = courseData.syllabus.slice(0, 4);
+  if (isLink !== "http" && isLink.length > 0) {
+    warningArray.push('Kursplanen är inte en länk');
+  }
+
   validateInput(courseData.progression, 'Kursprogression kan inte vara tomt.', warningArray);
-  console.log(warningArray);
+
+  if (courseData.progression.length > 1) {
+    warningArray.push('Kursprogression får endast bestå av ett tecken.')
+  }
   
   if (warningArray.length > 0) {
     res.render('form', { 
