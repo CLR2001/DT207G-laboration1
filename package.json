@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build": "vite build",
+    "start": "npx tsx app.ts",
     "dev:server": "nodemon --exec npx tsx app.ts",
     "dev:client": "vite build && vite build --watch",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
