@@ -20,8 +20,26 @@
   </header>
 
   <main>
-    <div class="main-content">
+    <div class="main-content index-main">
       <h1>Startsida</h1>
+      <section class="course-cards">
+        <h2>Dina Kurser</h2>
+        <% if (courses.length === 0) {%>
+          <p>Du har inga registrerade kurser.</p>
+        <% } %>
+        <% courses.forEach((course, index) => { -%>
+          <section class="course-card">
+            <p><b><%- course.coursecode %></b></p>
+            <p>Namn: <%- course.coursename %></p>
+            <div><p>Kursplan: </p><a href="<%- course.syllabus %>" target="_blank">Klicka här</a></div>
+            <p>Progression: <b><%- course.progression.toUpperCase() %></b></p>
+            <form action="/delete" method="POST" onsubmit="return confirm('Vill du verkligen radera <%= course.coursecode %>?')">
+              <input type="hidden" name="coursecode" value="<%= course.coursecode  %>">
+              <button type="submit" class="delete-button">Radera kurs</button>
+            </form>
+          </section>
+        <% }) -%>
+      </section>
     </div>
   </main>
 
@@ -31,6 +49,9 @@
         <li>Ludvig Rosenqvist</li>
         <li>2026</li>
         <li>Laboration 1</li>
+        <li>
+          <button type="button" class="theme-button" id="theme-button"></button>
+        </li>
       </ul>
     </div>
   </footer>

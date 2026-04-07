@@ -1,14 +1,13 @@
 /* --------------------------------- Imports -------------------------------- */
-import express, { application } from 'express';
+import express from 'express';
 import { Request, Response } from 'express';
-import pgImport, { Connection } from 'pg';
+import pgImport from 'pg';
 const { Client } = pgImport;
 import 'dotenv/config';
 import path from 'path';
 import pc from "picocolors";
 import livereload from "livereload";
 import connectLiveReload from "connect-livereload";
-import { start } from 'repl';
 
 /* --------------------------- App Initialization --------------------------- */
 const app = express();
@@ -46,7 +45,14 @@ connectToDatabase();
 
 /* --------------------------------- Routing -------------------------------- */
 app.get("/", async (req, res) => {
-  res.render('index');
+  try {
+    const result = await client.query(
+      'SELECT * FROM courses'
+    );
+    res.render('index', { courses: result.rows });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.get("/form", async (req, res) => {
@@ -65,6 +71,24 @@ app.get("/about", async (req, res) => {
 /* ---------------------------------- Posts --------------------------------- */
 app.post('/form', async (req, res) => {
   formSubmit(req, res);
+});
+
+app.post('/delete', async (req, res) => {
+  const courseToDelete = req.body.coursecode;
+
+  if (!courseToDelete) {
+    return res.redirect("/");
+  }
+
+  try {
+    const query = 'DELETE FROM courses WHERE coursecode = $1';
+    await client.query(query, [courseToDelete]);
+
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    res.redirect("/?error=true");
+  }
 });
 
 /* ----------------------- Application Start Sequence ----------------------- */
@@ -88,6 +112,10 @@ interface Course {
 }
 
 /* -------------------------------- Functions ------------------------------- */
+/**
+ * @function connectToDatabase
+ * @description Connects to database.
+ */
 async function connectToDatabase() {
   try {
     await client.connect();
@@ -99,15 +127,34 @@ async function connectToDatabase() {
   }
 }
 
-function validateInput(input: string, message: string, array: Array<string>) {
+/**
+ * @function isInputEmpty
+ * @description Checks if input is empty and adds warning message to an array.
+ * @param input Input to check.
+ * @param message Message to add to array in case of empty input.
+ * @param array Array to store messsages.
+ */
+function isInputEmpty(input: string, message: string, array: Array<string>) {
   if(input === "") {
     array.push(message);    
   }
 }
 
-function formSubmit(req: Request, res: Response) {
-  let warningArray: Array<string> = [];
+/**
+ * @function isInputLink
+ * @description Checks if input is link (http or https).
+ * @param input Input to check.
+ */
+function isInputLink(input: string): boolean {
+  try {
+    const url = new URL(input);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (error) {
+    return false;
+  }
+}
 
+async function formSubmit(req: Request, res: Response) {
   const courseData: Course = {
     courseCode: req.body.coursecode || "",
     courseName: req.body.coursename || "",
@@ -115,11 +162,13 @@ function formSubmit(req: Request, res: Response) {
     progression: req.body.progression || ""
   }
 
-  validateInput(courseData.courseCode, 'Kurskod kan inte vara tomt.', warningArray);
-  validateInput(courseData.courseName, 'Kursnamn kan inte vara tomt.', warningArray);
-  validateInput(courseData.syllabus, 'Kursplan kan inte vara tomt.', warningArray);
-  validateInput(courseData.progression, 'Kursprogression kan inte vara tomt.', warningArray);
-  console.log(warningArray);
+  const warningArray: Array<string> = [];
+  isInputEmpty(courseData.courseCode, 'Kurskod kan inte vara tomt.', warningArray);
+  isInputEmpty(courseData.courseName, 'Kursnamn kan inte vara tomt.', warningArray);
+  isInputEmpty(courseData.syllabus, 'Kursplan kan inte vara tomt.', warningArray);
+  if (!isInputLink(courseData.syllabus) && courseData.syllabus !== "") {
+    warningArray.push('Kursplan måste innehålla en länk.');
+  };
   
   if (warningArray.length > 0) {
     res.render('form', { 
@@ -129,20 +178,29 @@ function formSubmit(req: Request, res: Response) {
   } 
   else {
     try {
+      const query = 'INSERT INTO courses(coursecode, coursename, syllabus, progression) VALUES($1, $2 ,$3, $4)'
+      const values = [
+        courseData.courseCode,
+        courseData.courseName,
+        courseData.syllabus,
+        courseData.progression
+      ];
 
+      await client.query(query, values);
 
-
-
-
-
-
-
-
-
-      
       res.redirect('/form?saved=true');
-    } catch(error) {
-      console.log(error);
+    } catch(error: any) {
+      console.error(error);
+      let message: string = 'Ett tekniskt fel uppstod när kursen skulle sparas.';
+
+      if (error.code === '23505') {
+        message = 'Kurskoden finns redan registrerad.';
+      }
+
+      res.render('form', { 
+        warningArray: [message], 
+        courseData 
+      });
     }
   }
 }

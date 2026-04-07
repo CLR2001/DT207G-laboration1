@@ -9,14 +9,20 @@
   width: min(90%, 700px);
 }
 
-form {
+.main-content-form form {
   display: grid;
   gap: 1rem;
   margin: 2rem 0;
   input {
     width: 100%;
     padding:  0 5px;
+    border: 1px solid rgb(240, 240, 240);
     border-radius: 4px;
+    background-color: rgb(240, 240, 240);
+  }
+  select {
+    width: fit-content;
+    border: 1px solid rgb(240, 240, 240);
     background-color: rgb(240, 240, 240);
   }
   div {
@@ -25,12 +31,14 @@ form {
   }
 }
 
-.form-buttons {
+.main-content-form .form-buttons {
   flex-direction: row;
   gap: 1rem;
-  input, .reset-button {
+  .submit-button, .reset-button {
     width: max-content;
     padding: 0.5rem 1rem;
+    border: none;
+    border: 1px solid rgb(240, 240, 240);
     border-radius: 4px;
     color: $text-primary-inverse;
     background-color: rgb(240, 240, 240);
@@ -52,4 +60,16 @@ form {
 .saved-alert {
   list-style-type: disc;
   color: rgb(63, 233, 63);
+}
+
+:root[data-theme="light"] {
+  .main-content-form form {
+    input, select {
+      border-color: $text-primary;
+    }
+  }
+  .submit-button, .reset-button {
+    color: $text-primary;
+    border-color: $text-primary;
+  }
 }

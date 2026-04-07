@@ -1,5 +1,50 @@
 @use '../core/' as *;
 
-.main-content {
-  margin: 3rem auto;
+.index-main {
+  h1, h2 {
+    margin-bottom: 1rem;
+  }
+}
+
+.course-cards {
+  display: grid;
+  gap: 2rem;
+  counter-reset: card-counter;
+}
+
+.course-card {
+  position: relative;
+  justify-self: center;
+  padding: 2rem;
+  background-color: $color-primary;
+  border-radius: 1rem;
+  width: min(90%, 600px);
+  div {
+    display: flex;
+    gap: 0.5ch;
+  }
+  a {
+    text-decoration: underline;
+  }
+  &::after {
+    counter-increment: card-counter;
+    content: "#" counter(card-counter);
+    position: absolute;
+    top: 1ch;
+    right: 2ch;
+    filter: brightness(0.5);
+  }
+}
+
+.delete-button {
+  position: absolute;
+  right: 2ch;
+  bottom: 2ch;
+  color: $text-primary;
+  text-decoration: underline;
+  filter: brightness(0.5);
+  transition: filter 100ms ease-in-out;
+  &:hover {
+    filter: brightness(0.8);
+  }
 }

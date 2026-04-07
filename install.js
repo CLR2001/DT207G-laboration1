@@ -33,7 +33,7 @@ async function createTables() {
       DROP TABLE IF EXISTS courses;
       CREATE TABLE IF NOT EXISTS courses (
         id SERIAL PRIMARY KEY,
-        coursecode TEXT NOT NULL,
+        coursecode TEXT NOT NULL UNIQUE,
         coursename TEXT NOT NULL,
         syllabus TEXT NOT NULL,
         progression CHAR(1) NOT NULL,
@@ -43,8 +43,5 @@ async function createTables() {
   } 
   catch (error) {
     console.error(error);
-  }
-  finally {
-    
   }
 }

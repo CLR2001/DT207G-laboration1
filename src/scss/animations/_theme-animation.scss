@@ -1,7 +1,7 @@
 $theme-duration: 200ms;
 $theme-curve: cubic-bezier(0.4, 0, 0.2, 1);
 
-body, header, .active-page::after, .main-content-not-found a, footer {
+body, header, .active-page::after, .main-content-not-found a, footer, .course-card {
   transition: background-color $theme-duration $theme-curve,
 }
 

@@ -25,22 +25,26 @@
       <form action="/form" method="post">
         <div>
           <label for="coursecode">Kurskod:</label>
-          <input type="text" name="coursecode" placeholder="DT084G" value="<%= locals.courseData?.courseCode || "" %>">
+          <input type="text" name="coursecode" id="coursecode" placeholder="DT084G" value="<%= locals.courseData?.courseCode || "" %>">
         </div>
         <div>
           <label for="coursename">Kursnamn:</label>
-          <input type="text" name="coursename" placeholder="Íntroduktion till programmering i JavaScript" value="<%= locals.courseData?.courseName || "" %>">
+          <input type="text" name="coursename" id="coursename" placeholder="Introduktion till programmering i JavaScript" value="<%= locals.courseData?.courseName || "" %>">
         </div>
         <div>
           <label for="syllabus">Kursplan:</label>
-          <input type="text" name="syllabus" placeholder="https://www.miun.se/utbildning/..." value="<%= locals.courseData?.syllabus || "" %>">
+          <input type="text" name="syllabus" id="syllabus" placeholder="https://www.miun.se/utbildning/..." value="<%= locals.courseData?.syllabus || "" %>">
         </div>
         <div>
-          <label for="progression">Kursprogression:</label>
-          <input type="text" name="progression" placeholder="A" value="<%= locals.courseData?.progression || "" %>">
-        </div>
+      <label for="progression">Kursprogression:</label>
+        <select name="progression" id="progression">
+          <option value="a">A</option>
+          <option value="b">B</option>
+          <option value="c">C</option>
+        </select>
+      </div>
         <div class="form-buttons">
-          <input type="submit" value="Skicka"></input>
+          <input type="submit" value="Skicka" class="submit-button"></input>
           <a href="/form" class="reset-button">Rensa</a>
         </div>
       </form>
@@ -68,6 +72,9 @@
         <li>Ludvig Rosenqvist</li>
         <li>2026</li>
         <li>Laboration 1</li>
+        <li>
+          <button type="button" class="theme-button" id="theme-button"></button>
+        </li>
       </ul>
     </div>
   </footer>
