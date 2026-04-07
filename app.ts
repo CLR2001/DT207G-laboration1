@@ -13,17 +13,19 @@ import connectLiveReload from "connect-livereload";
 const app = express();
 
 /* --------------------------- Live Reload Server --------------------------- */
-const liveReloadServer = livereload.createServer();
-
-liveReloadServer.watch(path.resolve('views'));
-liveReloadServer.watch(path.resolve('public'));
-
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
-app.use(connectLiveReload());
+if (process.env.NODE_ENV !== 'production') {
+  const liveReloadServer = livereload.createServer();
+  
+  liveReloadServer.watch(path.resolve('views'));
+  liveReloadServer.watch(path.resolve('public'));
+  
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+  app.use(connectLiveReload());
+}
 
 /* ------------------- View Engine and Database Connection ------------------ */
 app.set('view engine', 'ejs');
@@ -97,7 +99,7 @@ const PORT = Number(process.env.PORT) || 3000;
 app.listen(PORT, () => {
   setTimeout(() => {
     console.log("\n-------------------------------------------");
-    console.log(`  ● Server is running!`);
+    console.log(`  ● Server is running on port ${PORT}!`);
     console.log(`  › ${pc.blue(pc.underline(`http://localhost:${PORT}`))}`);
     console.log("-------------------------------------------");
   }, 500);
