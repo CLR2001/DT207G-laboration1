@@ -1,13 +1,15 @@
 @use '../core/' as *;
 
-.main-content {
-  margin: 3rem auto;
+.index-main {
+  h1, h2 {
+    margin-bottom: 1rem;
+  }
 }
 
-.courses-section {
+.course-cards {
   display: grid;
-  gap: 1rem;
-  margin: 2rem 0;
+  gap: 2rem;
+  counter-reset: card-counter;
 }
 
 .course-card {
@@ -24,7 +26,9 @@
   a {
     text-decoration: underline;
   }
-  .course-indicator {
+  &::after {
+    counter-increment: card-counter;
+    content: "#" counter(card-counter);
     position: absolute;
     top: 1ch;
     right: 2ch;

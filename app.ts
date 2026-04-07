@@ -123,15 +123,34 @@ async function connectToDatabase() {
   }
 }
 
-function validateInput(input: string, message: string, array: Array<string>) {
+/**
+ * @function isInputEmpty
+ * @description Checks if input is empty and adds warning message to an array.
+ * @param input Input to check.
+ * @param message Message to add to array in case of empty input.
+ * @param array Array to store messsages.
+ */
+function isInputEmpty(input: string, message: string, array: Array<string>) {
   if(input === "") {
     array.push(message);    
   }
 }
 
-async function formSubmit(req: Request, res: Response) {
-  let warningArray: Array<string> = [];
+/**
+ * @function isInputLink
+ * @description Checks if input is link (http or https).
+ * @param input Input to check.
+ */
+function isInputLink(input: string): boolean {
+  try {
+    const url = new URL(input);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (error) {
+    return false;
+  }
+}
 
+async function formSubmit(req: Request, res: Response) {
   const courseData: Course = {
     courseCode: req.body.coursecode || "",
     courseName: req.body.coursename || "",
@@ -139,20 +158,13 @@ async function formSubmit(req: Request, res: Response) {
     progression: req.body.progression || ""
   }
 
-  validateInput(courseData.courseCode, 'Kurskod kan inte vara tomt.', warningArray);
-  validateInput(courseData.courseName, 'Kursnamn kan inte vara tomt.', warningArray);
-  validateInput(courseData.syllabus, 'Kursplan kan inte vara tomt.', warningArray);
-
-  const isLink = courseData.syllabus.slice(0, 4);
-  if (isLink !== "http" && isLink.length > 0) {
-    warningArray.push('Kursplanen är inte en länk');
-  }
-
-  validateInput(courseData.progression, 'Kursprogression kan inte vara tomt.', warningArray);
-
-  if (courseData.progression.length > 1) {
-    warningArray.push('Kursprogression får endast bestå av ett tecken.')
-  }
+  const warningArray: Array<string> = [];
+  isInputEmpty(courseData.courseCode, 'Kurskod kan inte vara tomt.', warningArray);
+  isInputEmpty(courseData.courseName, 'Kursnamn kan inte vara tomt.', warningArray);
+  isInputEmpty(courseData.syllabus, 'Kursplan kan inte vara tomt.', warningArray);
+  if (!isInputLink(courseData.syllabus) && courseData.syllabus !== "") {
+    warningArray.push('Kursplan måste innehålla en länk.');
+  };
   
   if (warningArray.length > 0) {
     res.render('form', { 
@@ -173,10 +185,16 @@ async function formSubmit(req: Request, res: Response) {
       await client.query(query, values);
 
       res.redirect('/form?saved=true');
-    } catch(error) {
-      console.log(error);
+    } catch(error: any) {
+      console.error(error);
+      let message: string = 'Ett tekniskt fel uppstod när kursen skulle sparas.';
+
+      if (error.code === '23505') {
+        message = 'Kurskoden finns redan registrerad.';
+      }
+
       res.render('form', { 
-        warningArray: ['Ett tekniskt fel uppstod när kursen skulle sparas.'], 
+        warningArray: [message], 
         courseData 
       });
     }

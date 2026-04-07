@@ -20,6 +20,11 @@
     border-radius: 4px;
     background-color: rgb(240, 240, 240);
   }
+  select {
+    width: fit-content;
+    border: 1px solid rgb(240, 240, 240);
+    background-color: rgb(240, 240, 240);
+  }
   div {
     display: flex;
     flex-direction: column;
@@ -59,7 +64,7 @@
 
 :root[data-theme="light"] {
   .main-content-form form {
-    input {
+    input, select {
       border-color: $text-primary;
     }
   }

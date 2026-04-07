@@ -6,5 +6,3 @@ document.addEventListener('DOMContentLoaded', () => {
   initIcons();
   initThemeHandler();
 });
-
-console.log('Vite fungerar');
