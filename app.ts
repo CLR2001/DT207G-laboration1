@@ -112,6 +112,10 @@ interface Course {
 }
 
 /* -------------------------------- Functions ------------------------------- */
+/**
+ * @function connectToDatabase
+ * @description Connects to database.
+ */
 async function connectToDatabase() {
   try {
     await client.connect();
