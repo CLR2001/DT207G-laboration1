@@ -8,9 +8,15 @@ import path from 'path';
 import pc from "picocolors";
 import livereload from "livereload";
 import connectLiveReload from "connect-livereload";
+import cookieParser from 'cookie-parser';
 
 /* --------------------------- App Initialization --------------------------- */
 const app = express();
+app.use(cookieParser());
+app.use((req, res, next) => {
+  res.locals.theme = req.cookies.theme || 'dark';
+  next();
+});
 
 /* --------------------------- Live Reload Server --------------------------- */
 if (process.env.NODE_ENV !== 'production') {
