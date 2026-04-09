@@ -10,6 +10,9 @@ Denna webbplats tillåter användaren att spara kurser via ett formulär som sed
 * **Validering:** All data som ska lagras valideras innan insättning för att undvika felaktiga, skdaliga och tomma värden.
 * **Nodemon:** Nodemon övervakar ändringar i koden under utveckling och startar automatiskt om servern vid sparade ändringar.
 
+## ✦ ER-Diagram
+![Er-diagram med endast en tabell](er.png)
+
 ## ⌨ Installation & Setup
 
 1. **Klona projektet:**
@@ -31,7 +34,7 @@ Denna webbplats tillåter användaren att spara kurser via ett formulär som sed
    ```
 
 ## ⬀ Länk till webbplats
-[Webbplats](https://dt207g-laboration1.netlify.app/)
+[Webbplats](https://dt207g-laboration1.onrender.com/)
 
 ## ⬢ Utvecklare
 **Ludvig Rosenqvist** — *Student*

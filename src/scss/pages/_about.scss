@@ -1,1 +1,12 @@
 @use '../core/' as *;
+
+.about-content {
+  display: grid;
+  gap: 2rem;
+  margin: 4rem auto;
+  margin-bottom: 2rem;
+  max-width: 65ch;
+  p ~ p{
+    margin-top: 2ch;
+  }
+}

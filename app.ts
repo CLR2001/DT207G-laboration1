@@ -100,7 +100,9 @@ app.listen(PORT, () => {
   setTimeout(() => {
     console.log("\n-------------------------------------------");
     console.log(`  ● Server is running on port ${PORT}!`);
-    console.log(`  › ${pc.blue(pc.underline(`http://localhost:${PORT}`))}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`  › ${pc.blue(pc.underline(`http://localhost:${PORT}`))}`);
+    }
     console.log("-------------------------------------------");
   }, 500);
 });
